@@ -134,3 +134,10 @@ Key lifecycle methods in order:
 - **Share:** DTOs, request/response records, enums, constants (via Shared/Contracts project)
 - **Never share:** Domain entities, value objects, repository interfaces, infrastructure types
 - WASM clients are untrusted — all validation must be repeated server-side
+
+## References
+
+- [Blazor Documentation](https://learn.microsoft.com/aspnet/core/blazor)
+- [Blazor Performance](https://learn.microsoft.com/aspnet/core/blazor/performance)
+- [Blazor Lifecycle](https://learn.microsoft.com/aspnet/core/blazor/components/lifecycle)
+- [Razor Class Libraries](https://learn.microsoft.com/aspnet/core/razor-pages/ui-class)

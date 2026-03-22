@@ -25,7 +25,8 @@
         "ms-dotnettools.csdevkit",
         "ms-azuretools.vscode-azure-mcp-server",
         "GitHub.copilot",
-        "GitHub.copilot-chat"
+        "GitHub.copilot-chat",
+        "ms-playwright.playwright"
       ]
     }
   },
@@ -40,5 +41,5 @@
     "--security-opt=label=disable"
   ],
 
-  "postCreateCommand": "dotnet --info && node --version && gh --version && az --version"
+  "postCreateCommand": "dotnet --info && node --version && gh --version && az --version && npm install -g @playwright/cli@latest && playwright-cli install --skills"
 }

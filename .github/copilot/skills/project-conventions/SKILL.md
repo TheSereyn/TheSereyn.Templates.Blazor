@@ -178,6 +178,13 @@ API          → Depends on Application. Endpoints, DI composition root. No busi
 - Infrastructure depends inward
 - Shared contracts only (DTOs) — never domain types across boundaries
 
+## References
+
+- [RFC 9457 — Problem Details](https://www.rfc-editor.org/rfc/rfc9457.html)
+- [ASP.NET Core Minimal APIs](https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis)
+- [Clean Architecture](https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture)
+- [OpenTelemetry .NET](https://opentelemetry.io/docs/languages/dotnet/)
+
 ## Anti-Patterns
 
 - **No sync-over-async.** `.Result`, `.Wait()`, `.GetAwaiter().GetResult()` are bugs.

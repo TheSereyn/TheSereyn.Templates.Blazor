@@ -10,6 +10,10 @@
       "env": {
         "GITHUB_TOKEN": "${input:githubToken}"
       }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/playwright-mcp-server"]
     }
   },
   "inputs": [

@@ -49,13 +49,47 @@ Files to update:
 - `.devcontainer/devcontainer.json` (container name)
 - `README.md`
 
-## Step 5 — Git Initialisation
+## Step 5 — Select License
+
+Ask the user which license they want for the project. Offer common options:
+
+1. **MIT** — permissive, minimal restrictions
+2. **Apache 2.0** — permissive with patent grant
+3. **GPL 3.0** — copyleft, derivative works must also be GPL
+4. **Proprietary / None** — no open-source license
+
+Based on their choice:
+- Generate the appropriate `LICENSE` file in the project root
+- Update the `## License` section in `README.md` to link to the chosen license
+
+If the user is unsure, suggest MIT as a sensible default for open-source projects, or Proprietary if it's a commercial/internal project.
+
+## Step 6 — Compliance Frameworks
+
+Ask the user:
+
+> "Does this project need to comply with any industry standards or compliance frameworks?"
+
+Offer common examples:
+- **ISO 27001** — Information security management
+- **SOC 2** — Service organisation controls
+- **PCI DSS** — Payment card industry data security
+- **HIPAA** — Health information privacy (US)
+- **GDPR** — General data protection regulation (EU)
+- **None / Not sure yet**
+
+Based on their response:
+- Note the selected frameworks in `.github/copilot-instructions.md` under a new `## Compliance` section
+- Recommend the corresponding compliance skills for reference during development
+- If they select any framework, create a `docs/planning/compliance-notes.md` stub with sections for each selected framework
+
+## Step 7 — Git Initialisation
 
 If this is a fresh clone from "Use this template":
 - Verify git is initialised (`git status`)
 - If the user provided a GitHub repo URL, verify or set the remote
 
-## Step 6 — Install or Verify Squad
+## Step 8 — Install or Verify Squad
 
 Check if Squad is already installed by looking for its agent file (typically `.github/agents/squad.agent.md` or `.squad/team.md`).
 
@@ -69,13 +103,13 @@ Check if Squad is already installed by looking for its agent file (typically `.g
 - Walk the user through installation and `squad init`
 - Run `squad doctor` to verify setup
 
-## Step 7 — Summary and Next Steps
+## Step 9 — Summary and Next Steps
 
 Provide a summary of what was configured, then suggest:
 
-1. **Start with the Business Analyst** — Use `@Business Analyst` in Copilot Chat with your project idea to generate requirements
+1. **Gather requirements** — Run `/requirements-interview` in Copilot Chat with your project idea
 2. **Use Squad** — Once requirements are ready, start Squad to design and implement the architecture
-3. **Review skills** — The project includes skills for TUnit testing, project conventions, requirements gathering, and Playwright CLI
+3. **Review skills** — The project includes skills for TUnit testing, project conventions, requirements gathering, security review, RFC compliance, code analyzers, and Playwright CLI
 
 ## Self-Cleanup
 
