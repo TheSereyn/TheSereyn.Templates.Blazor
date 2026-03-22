@@ -55,9 +55,19 @@ If this is a fresh clone from "Use this template":
 - Verify git is initialised (`git status`)
 - If the user provided a GitHub repo URL, verify or set the remote
 
-## Step 6 — Check Squad Availability
+## Step 6 — Install or Verify Squad
 
-Look for Squad's agent file (typically `.github/agents/squad.agent.md` or similar location set by Squad installation). If found, report the version. If not found, note that Squad can be installed via npm.
+Check if Squad is already installed by looking for its agent file (typically `.github/agents/squad.agent.md` or `.squad/team.md`).
+
+**If Squad is found:**
+- Report the installed version (`squad --version` if available)
+- Run `squad doctor` to confirm everything is healthy
+
+**If Squad is NOT found (expected for new repos):**
+- Read the `squad-setup` skill for installation and initialisation steps
+- Before proceeding, fetch the current Squad README from `https://github.com/bradygaster/squad` and verify the skill's steps are still accurate (Squad is alpha software and the process may change)
+- Walk the user through installation and `squad init`
+- Run `squad doctor` to verify setup
 
 ## Step 7 — Summary and Next Steps
 
