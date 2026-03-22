@@ -111,4 +111,4 @@ See the `project-conventions`, `tunit-testing`, and `blazor-architecture` skills
 
 ---
 
-*Composed from [TheSereyn.Templates](https://github.com/TheSereyn/TheSereyn.Templates) @ v0.1.1*
+*Composed from [TheSereyn.Templates](https://github.com/TheSereyn/TheSereyn.Templates) @ v0.1.0*
