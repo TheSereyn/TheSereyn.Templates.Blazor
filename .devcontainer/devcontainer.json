@@ -1,0 +1,44 @@
+{
+  "name": "{{PROJECT_NAME}} - Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0-noble",
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": false,
+      "installDockerBuildx": false
+    },
+    "ghcr.io/devcontainers/features/azure-cli:1": {}
+  },
+
+  "mounts": [
+    "source=${localEnv:XDG_RUNTIME_DIR}/podman/podman.sock,target=/var/run/docker-host.sock,type=bind"
+  ],
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.csdevkit",
+        "ms-azuretools.vscode-azure-mcp-server",
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
+      ]
+    }
+  },
+
+  "remoteUser": "vscode",
+  "containerUser": "vscode",
+  "containerEnv": {
+    "HOME": "/home/vscode"
+  },
+  "runArgs": [
+    "--userns=keep-id",
+    "--security-opt=label=disable"
+  ],
+
+  "postCreateCommand": "dotnet --info && node --version && gh --version && az --version"
+}
