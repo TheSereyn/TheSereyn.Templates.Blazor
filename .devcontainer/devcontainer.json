@@ -41,5 +41,5 @@
     "--security-opt=label=disable"
   ],
 
-  "postCreateCommand": "dotnet --info && node --version && gh --version && az --version && npm install -g @playwright/cli@latest && playwright-cli install --skills"
+  "postCreateCommand": "dotnet --info && node --version && gh --version && az --version && gh extension install github/gh-copilot && copilot plugin marketplace add microsoft/azure-skills && copilot plugin install azure@azure-skills && copilot plugin install microsoftdocs/mcp && npx playwright install --with-deps"
 }
