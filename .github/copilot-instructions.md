@@ -164,3 +164,8 @@ The hosting model must be decided **per feature** — this is an ask-first trigg
 ### Skills
 
 - `blazor-architecture` — Hosting model guidance, multi-frontend patterns, RCL strategy, performance, state management
+
+## Playwright
+
+Playwright CLI ([microsoft/playwright-cli](https://github.com/microsoft/playwright-cli)) is installed globally via `@playwright/cli` with skills registered for this agent.
+Use `playwright-cli --help` for available commands. Browser binaries and OS dependencies are pre-installed via `npx playwright install --with-deps`.
