@@ -142,9 +142,35 @@ Key lifecycle methods in order:
 - **Never share:** Domain entities, value objects, repository interfaces, infrastructure types
 - WASM clients are untrusted — all validation must be repeated server-side
 
+## CSS Architecture
+
+All CSS for Blazor projects follows the [CSS Design System Skill](../css-design-system/SKILL.md). The architecture uses Design Tokens + CUBE CSS + Blazor CSS Isolation.
+
+### Key Rules
+
+- Every Razor component must have a `.razor.css` file with scoped styles.
+- Scoped styles reference global tokens via `var(--token-name)` — never hardcode values.
+- Global styles live in `wwwroot/css/`, structured with `@layer` — no component CSS in global files.
+- Use `oklch()` for colours, logical properties for layout, container queries for responsive components.
+
+### Global CSS File Structure
+
+```
+wwwroot/
+└── css/
+    ├── app.css              ← @layer declaration + @import statements
+    ├── _tokens.css          ← Design tokens (custom properties on :root)
+    ├── _base.css            ← Base element styles (reset, typography)
+    ├── _compositions.css    ← Layout primitives (stack, cluster, sidebar, grid)
+    └── _utilities.css       ← Utility classes (visually-hidden, flow, text-center)
+```
+
+See the [CSS Design System Skill](../css-design-system/SKILL.md) for full guidance on tokens, CUBE CSS methodology, dark theme, accessibility, and code review checklists.
+
 ## References
 
 - [Blazor Documentation](https://learn.microsoft.com/aspnet/core/blazor)
 - [Blazor Performance](https://learn.microsoft.com/aspnet/core/blazor/performance)
 - [Blazor Lifecycle](https://learn.microsoft.com/aspnet/core/blazor/components/lifecycle)
 - [Razor Class Libraries](https://learn.microsoft.com/aspnet/core/razor-pages/ui-class)
+- [CSS Design System Skill](../css-design-system/SKILL.md)
