@@ -48,19 +48,25 @@ git config --global user.name "Your Name"
 git config --global user.email "your@email.com"
 ```
 
-### 5. Open in Dev Container
+### 5. Set Container Name
+
+Open `.devcontainer/devcontainer.json` in any text editor on your host machine and replace `{{PROJECT_NAME}}` with your project name.
+
+> **Why now?** Docker and VS Code read the container name at build time. If you change it inside the container after the first build, the name won't update until you do a full container rebuild.
+
+### 6. Open in Dev Container
 
 Open the repo folder in VS Code. When prompted, click **"Reopen in Container"**.
 
 If the prompt doesn't appear, run the command palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) and select **"Dev Containers: Reopen in Container"**.
 
-### 6. Wait for Post-Create
+### 7. Wait for Post-Create
 
 The container will build and run `post-create.sh` automatically. Watch the terminal for output.
 
 This installs tools and configures the development environment. It may take several minutes on first build.
 
-### 7. Next Step
+### 8. Next Step
 
 Once the container is ready, open **Copilot Chat** and run:
 

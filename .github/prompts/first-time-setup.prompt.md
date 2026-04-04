@@ -55,7 +55,6 @@ Update the following files, replacing placeholders:
 
 Files to update:
 - `.github/copilot-instructions.md`
-- `.devcontainer/devcontainer.json` (container name)
 - `README.md`
 
 ## Step 6 — Select License
