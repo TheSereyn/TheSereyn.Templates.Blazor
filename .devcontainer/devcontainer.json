@@ -6,7 +6,9 @@
     "ghcr.io/devcontainers/features/node:1": {
       "version": "22"
     },
-    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "2"
+    },
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "moby": false,
       "installDockerBuildx": false
@@ -14,14 +16,9 @@
     "ghcr.io/devcontainers/features/azure-cli:1": {}
   },
 
-  "mounts": [
-    "source=${localEnv:XDG_RUNTIME_DIR}/podman/podman.sock,target=/var/run/docker-host.sock,type=bind"
-  ],
-
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-dotnettools.csharp",
         "ms-dotnettools.csdevkit",
         "ms-azuretools.vscode-azure-mcp-server",
         "GitHub.copilot",
@@ -37,9 +34,10 @@
     "HOME": "/home/vscode"
   },
   "runArgs": [
-    "--userns=keep-id",
     "--security-opt=label=disable"
   ],
 
-  "postCreateCommand": "dotnet --info && node --version && gh --version && az --version && gh extension install github/gh-copilot && copilot plugin marketplace add microsoft/azure-skills && copilot plugin install azure@azure-skills && copilot plugin install microsoftdocs/mcp && npm install -g @playwright/cli@latest && playwright-cli install --skills && npx playwright install --with-deps"
+  "forwardPorts": [5000, 5001, 5173],
+
+  "postCreateCommand": "bash .devcontainer/post-create.sh"
 }

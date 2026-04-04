@@ -1,0 +1,22 @@
+<Project>
+  <!--
+    Central Package Management (CPM) — prevents individual projects from pulling
+    arbitrary package versions. Add shared package versions here. Projects reference
+    packages without a Version attribute.
+
+    See: https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management
+  -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Analyzer packages — versions managed centrally so all projects use the same build. -->
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
+
+    <!-- Add further shared package versions here as the project grows. Example:
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.0" />
+    -->
+  </ItemGroup>
+</Project>

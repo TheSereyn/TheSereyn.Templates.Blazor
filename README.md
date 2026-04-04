@@ -31,7 +31,7 @@ Full-stack template for .NET projects with Minimal APIs, Blazor UI, Worker Servi
 | **MCP Servers** | Microsoft Learn, GitHub, **Playwright** |
 | **Copilot Skills** | TUnit testing, project conventions, requirements gathering, **Blazor architecture**, security review, RFC compliance, code analyzers, **[Playwright CLI](https://github.com/microsoft/playwright-cli)** (auto-installed) |
 | **Prompts** | First-time setup, requirements interview |
-| **Squad** | AI development team (auto-installed via DevContainer) |
+| **Squad** | AI development team — installed via Dev Container |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
 
 ### Recommended Workflow
@@ -110,4 +110,4 @@ License is configured during first-time setup.
 
 ---
 
-*Composed from [TheSereyn.Templates](https://github.com/TheSereyn/TheSereyn.Templates) @ v0.2.2*
+*Composed from [TheSereyn.Templates](https://github.com/TheSereyn/TheSereyn.Templates) @ v0.3.0*
