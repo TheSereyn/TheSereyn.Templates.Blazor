@@ -1,8 +1,12 @@
 {
   "mcpServers": {
-    "microsoft-learn": {
+    "microsoftdocs": {
       "type": "http",
       "url": "https://learn.microsoft.com/api/mcp"
+    },
+    "nuget": {
+      "command": "dotnet",
+      "args": ["nuget-mcp"]
     },
     "github": {
       "command": "npx",
@@ -13,7 +17,7 @@
     },
     "playwright": {
       "command": "npx",
-      "args": ["-y", "@anthropic/playwright-mcp-server"]
+      "args": ["-y", "@playwright/mcp"]
     }
   },
   "inputs": [

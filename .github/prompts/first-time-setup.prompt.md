@@ -1,6 +1,6 @@
 ---
 mode: agent
-description: "One-shot setup prompt for new projects created from this template. Verifies environment, collects project info, resolves placeholders, and provides next steps."
+description: "In-container setup prompt. Run this from Copilot Chat after the dev container is ready. Configures project info, license, compliance, and security settings."
 tools: ['read', 'edit', 'search', 'terminal']
 ---
 
@@ -8,22 +8,27 @@ tools: ['read', 'edit', 'search', 'terminal']
 
 You are running the first-time setup for a new project created from a TheSereyn template.
 
-## Step 1 — Verify Environment
+## Step 1 — GitHub Authentication
 
-Check that the DevContainer is running with all required tools:
+Prompt the user to authenticate the GitHub CLI if they haven't already. Ask them to run this in the VS Code integrated terminal:
 
 ```bash
-dotnet --info
-node --version
-gh --version
-az --version
+gh auth status
 ```
 
-Report the status of each tool. If any are missing, warn the user but continue.
+If it reports "You are not logged in", ask them to run:
+
+```bash
+gh auth login
+```
+
+They should follow the browser-based flow (or device code flow) to complete authentication. This is required for GitHub features, the Copilot CLI extension, and Squad's GitHub integration.
+
+Once authenticated, verify with `gh auth status` and proceed.
 
 ## Step 2 — Check MCP Servers
 
-Confirm that MCP configuration exists at `.copilot/mcp-config.json`. List the configured servers (Microsoft Learn, GitHub, Azure).
+Confirm that MCP configuration exists at `.copilot/mcp-config.json`. List the configured servers (Microsoft Learn, GitHub, NuGet). Note that the user-level Copilot CLI MCP config at `/home/vscode/.copilot/mcp.json` is seeded separately during container creation.
 
 ## Step 3 — Setup Verification
 
@@ -44,9 +49,9 @@ Update the following files, replacing placeholders:
 
 | Placeholder | Value |
 |-------------|-------|
-| `{{PROJECT_NAME}}` | Project name from Step 3 |
-| `{{NAMESPACE}}` | Namespace root from Step 3 |
-| `{{DESCRIPTION}}` | Description from Step 3 |
+| `{{PROJECT_NAME}}` | Project name from Step 4 |
+| `{{NAMESPACE}}` | Namespace root from Step 4 |
+| `{{DESCRIPTION}}` | Description from Step 4 |
 
 Files to update:
 - `.github/copilot-instructions.md`
@@ -96,19 +101,16 @@ If this is a fresh clone from "Use this template":
 - Verify git is initialised (`git status`)
 - If the user provided a GitHub repo URL, verify or set the remote
 
-## Step 9 — Install or Verify Squad
+## Step 9 — Verify Squad
 
-Check if Squad is already installed by looking for its agent file (typically `.github/agents/squad.agent.md` or `.squad/team.md`).
-
-**If Squad is found:**
-- Report the installed version (`squad --version` if available)
+Squad is installed automatically during container creation. Verify the installation:
+- Report the installed version (`squad --version`)
 - Run `squad doctor` to confirm everything is healthy
 
-**If Squad is NOT found (expected for new repos):**
-- Read the `squad-setup` skill for installation and initialisation steps
-- Before proceeding, fetch the current Squad README from `https://github.com/bradygaster/squad` and verify the skill's steps are still accurate (Squad is alpha software and the process may change)
-- Walk the user through installation and `squad init`
-- Run `squad doctor` to verify setup
+> **Note:** If `squad doctor` reports issues, re-run the post-create script:
+> ```bash
+> bash .devcontainer/post-create.sh
+> ```
 
 ## Step 10 — Security Setup
 
@@ -129,7 +131,8 @@ Provide a summary of what was configured, then suggest:
 
 After completing setup, instruct the user:
 
-> You can delete this setup prompt now — it's a one-time operation:
-> ```
+> You can delete both setup prompts now — they are one-time operations:
+> ```bash
+> rm .github/prompts/pre-container-setup.prompt.md
 > rm .github/prompts/first-time-setup.prompt.md
 > ```

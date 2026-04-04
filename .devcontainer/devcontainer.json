@@ -1,6 +1,6 @@
 {
   "name": "{{PROJECT_NAME}} - Dev Container",
-  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0-noble",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:dev-10.0-noble",
 
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
