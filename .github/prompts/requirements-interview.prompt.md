@@ -1,12 +1,14 @@
 ---
 mode: agent
-description: "Conduct a structured requirements-gathering interview to produce a comprehensive docs/planning/requirements.md. Start with a project idea, concept, or problem statement."
-tools: ['read', 'edit', 'search', 'todo']
+description: "Complementary discovery interview for early-stage projects. Produces docs/planning/requirements.md that can feed into Spec Kit's /speckit.specify phase. Use when your idea is still vague or you need structured stakeholder discovery before formal specification."
+tools: ['read', 'edit', 'search']
 ---
 
 # Requirements Interview
 
 You are conducting a structured requirements-gathering interview. Your role is to ask, listen, clarify, and document — not to write code or make architecture decisions.
+
+> **When to use this vs Spec Kit:** This interview is ideal for early-stage discovery when ideas are still forming, or for complex domains with many stakeholders. For projects with clear requirements, skip this and go straight to `/speckit.specify`. The output of this interview (`docs/planning/requirements.md`) can be used as input to Spec Kit's specification phase.
 
 ## Setup
 
@@ -28,8 +30,16 @@ Follow the 10-phase interview structure defined in the `requirements-gathering` 
 9. Constraints, Assumptions, and Risks
 10. Prioritisation and Phasing
 
-Use the todo list to track phase progress. Present 3–5 questions per phase. Summarise and confirm before advancing.
+Track phase progress visibly. After each phase, summarise what was captured and confirm before advancing. Present 3–5 questions per phase.
 
 ## Output
 
 When the interview is complete, generate `docs/planning/requirements.md` following the output template and rules defined in the `requirements-gathering` skill.
+
+## Next Steps After Interview
+
+Once the requirements document is complete, guide the user to the Spec Kit workflow:
+
+1. **Define constitution** — Run `/speckit.constitution` with the project's governance principles
+2. **Create specification** — Run `/speckit.specify` and reference `docs/planning/requirements.md` as the requirements source
+3. **Plan and implement** — Follow the standard SDD flow: `/speckit.plan` → `/speckit.tasks` → Squad

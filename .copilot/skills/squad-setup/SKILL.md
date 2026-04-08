@@ -2,6 +2,14 @@
 
 How to install and initialise [Squad](https://github.com/bradygaster/squad) in a new project.
 
+Squad serves as the **implementation orchestrator** in this workflow. After Spec Kit produces a validated specification and task breakdown, Squad's team of specialist agents executes the implementation.
+
+### The Handoff from Spec Kit
+
+```
+Spec Kit (specify → plan → tasks)  →  Squad (implement with specialist agents)
+```
+
 > **Squad is alpha software** — installation steps may change between releases.
 > Before following this guide, fetch the current README from `https://github.com/bradygaster/squad`
 > (use the `fetch_webpage` tool or Microsoft Learn MCP) and verify the steps below still match.

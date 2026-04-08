@@ -57,6 +57,13 @@ Files to update:
 - `.github/copilot-instructions.md`
 - `README.md`
 
+Also update `LICENSE` with:
+
+| Placeholder | Value |
+|-------------|-------|
+| `{{YEAR}}` | Current year (e.g., `2026`) |
+| `{{AUTHOR}}` | Author or organisation name |
+
 ## Step 6 — Select License
 
 Ask the user which license they want for the project. Offer common options:
@@ -111,27 +118,57 @@ Squad is installed automatically during container creation. Verify the installat
 > bash .devcontainer/post-create.sh
 > ```
 
-## Step 10 — Security Setup
+## Step 10 — Initialise Spec Kit
 
-- Review `.gitignore` and confirm `appsettings.*.json`, `*.pfx`, `*.key`, and `.env` files are excluded
+Spec Kit provides the spec-driven development workflow for this project. Initialise it in the current directory:
+
+```bash
+specify init --here --ai copilot
+```
+
+Verify initialisation by confirming the `.specify/` directory was created and that the following slash commands are available in Copilot Chat:
+- `/speckit.specify` — define specifications
+- `/speckit.plan` — generate implementation plans
+- `/speckit.tasks` — break down into tasks
+
+> **Note:** If `specify` is not available, the post-create script may not have completed. Re-run it:
+> ```bash
+> bash .devcontainer/post-create.sh
+> ```
+> If `uv` is also missing, install it manually:
+> ```bash
+> python3 -m pip install --user uv
+> export PATH="$HOME/.local/bin:$PATH"
+> ```
+
+## Step 11 — Security Setup
+
+- Review `.gitignore` and confirm `appsettings.*.json`, `*.pfx`, `*.key`, `*.pem`, and `.env` files are excluded
 - Run `dotnet user-secrets init` in your main project to set up local secret management
 - Enable GitHub Secret Scanning on the repository (Settings → Security → Secret scanning)
 - Configure branch protection on `main`: require PR reviews, require status checks to pass before merging
 
-## Step 11 — Summary and Next Steps
+## Step 12 — Summary and Next Steps
 
 Provide a summary of what was configured, then suggest:
 
-1. **Gather requirements** — Run `/requirements-interview` in Copilot Chat with your project idea
-2. **Use Squad** — Once requirements are ready, start Squad to design and implement the architecture
-3. **Review skills** — The project includes skills for TUnit testing, project conventions, requirements gathering, Squad setup, security review (modular skill tree led by `security-review-core`), RFC compliance, and code analyzers
+1. **Define your constitution** — Run `/speckit.constitution` in Copilot Chat with your project's core principles and constraints (reference `.github/copilot-instructions.md` for established standards)
+2. **Specify what to build** — Run `/speckit.specify` to capture your requirements as executable specifications
+3. **Plan and implement** — Use `/speckit.plan` → `/speckit.tasks` → hand off to Squad (`@squad`) for implementation
+4. **Early-stage discovery (optional)** — If your idea is still vague, run `/requirements-interview` first to crystallise requirements before specifying
+5. **Review skills** — The project includes skills for spec-driven development, TUnit testing, project conventions, Squad setup, security (modular skill tree led by `security-review-core`), RFC compliance, and code analyzers. Run `/hire-security-architect` to optionally add a dedicated Security Architect to your Squad team.
 
 ## Self-Cleanup
 
 After completing setup, instruct the user:
 
-> You can delete both setup prompts now — they are one-time operations:
+> You can delete the setup prompts now — they are one-time operations:
 > ```bash
 > rm .github/prompts/pre-container-setup.prompt.md
 > rm .github/prompts/first-time-setup.prompt.md
+> ```
+>
+> **Keep** `verify-setup` — you can re-run it any time to health-check your environment:
+> ```
+> @workspace /verify-setup
 > ```

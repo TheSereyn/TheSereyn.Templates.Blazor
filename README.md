@@ -15,10 +15,11 @@ Full-stack template for .NET projects with Minimal APIs, Blazor UI, Worker Servi
 
 ### First-Time Setup
 
-1. Click **"Use this template"** on GitHub to create your new repository
-2. Clone your new repo and open it in VS Code
-3. When prompted, click **"Reopen in Container"**
-4. Once the container is built, run the **first-time-setup** prompt:
+1. Complete the **[pre-container setup](.github/prompts/pre-container-setup.prompt.md)** — install prerequisites on your local machine
+2. Click **"Use this template"** on GitHub to create your new repository
+3. Clone your new repo and open it in VS Code
+4. When prompted, click **"Reopen in Container"**
+5. Once the container is built, run the **first-time-setup** prompt:
    - Open Copilot Chat
    - Type: `@workspace /first-time-setup`
    - Follow the prompts to configure your project identity
@@ -28,18 +29,24 @@ Full-stack template for .NET projects with Minimal APIs, Blazor UI, Worker Servi
 | Component | Description |
 |-----------|-------------|
 | **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-outside-of-Docker |
-| **MCP Servers** | Microsoft Learn, GitHub, **Playwright** |
-| **Copilot Skills** | TUnit testing, project conventions, requirements gathering, **Blazor architecture**, security review, RFC compliance, code analyzers, **[Playwright CLI](https://github.com/microsoft/playwright-cli)** (auto-installed) |
-| **Prompts** | First-time setup, requirements interview |
-| **Squad** | AI development team — installed via Dev Container |
+| **MCP Servers** | Microsoft Learn, GitHub, Playwright |
+| **Spec Kit** | Spec-Driven Development — specifications, plans, and task decomposition |
+| **Squad** | AI development team — implementation orchestrator after planning |
+| **Skills** | TUnit testing, project conventions, spec-driven development, Blazor architecture, CSS design system, security (modular skill tree), RFC compliance, code analyzers |
+| **Prompts** | First-time setup, pre-container setup, verify setup, requirements interview, hire security architect |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
+| **Browser Automation** | [Playwright CLI](https://playwright.dev/docs/getting-started-cli) — agent-driven browser testing and automation |
 
-### Recommended Workflow
+### Development Workflow
 
-1. **Run first-time-setup** to configure project identity, select a license, and verify environment
-2. **Gather requirements** — run `/requirements-interview` in Copilot Chat with your project idea
-3. **Use Squad** to design architecture and scaffold the solution
-4. **Build iteratively** using the included skills and conventions
+This project uses **Spec-Driven Development** with Spec Kit and Squad:
+
+1. `/speckit.constitution` — Define project governance and principles
+2. `/speckit.specify` — Capture what to build and why
+3. `/speckit.plan` → `/speckit.tasks` — Technical plan and task breakdown
+4. `@squad` — Implementation orchestration with specialist agents
+
+For early-stage discovery, run `/requirements-interview` before specifying.
 
 ## Architecture
 
@@ -67,7 +74,7 @@ The hosting model should be decided **per feature** (this is an ask-first trigge
 | **Blazor WebAssembly** | Offline capability, zero-trust client, reduced server load |
 | **Blazor Hybrid** | Mix of both — feature-level decision |
 
-See the `blazor-architecture` skill for detailed patterns and guidance.
+See the `blazor-architecture` and `css-design-system` skills for detailed patterns and guidance.
 
 ## Development
 
@@ -93,8 +100,9 @@ dotnet run --project src/YourProject.Web/
 - **Pagination:** Cursor-based for all list endpoints
 - **Observability:** OpenTelemetry (traces, metrics, logs)
 - **Blazor:** Hosting model per feature, RCL for reusable components, minimal JS interop
+- **CSS:** Design Tokens + CUBE CSS + Blazor CSS Isolation
 
-See the `project-conventions`, `tunit-testing`, and `blazor-architecture` skills for detailed guidance.
+See the `project-conventions`, `tunit-testing`, `blazor-architecture`, and `css-design-system` skills for detailed guidance.
 
 ## Dependencies
 
@@ -102,7 +110,7 @@ See the `project-conventions`, `tunit-testing`, and `blazor-architecture` skills
 - [StyleCop Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers) — formatting and structure rules via `Directory.Build.props`
 - [TUnit](https://tunit.dev/) — testing framework on Microsoft Testing Platform
 - [Squad](https://github.com/bradygaster/squad) — AI development team, installed via DevContainer
-- [Playwright CLI](https://github.com/microsoft/playwright-cli) — browser automation, installed via DevContainer
+- [Playwright CLI](https://playwright.dev/docs/getting-started-cli) — browser automation for coding agents, installed via DevContainer
 
 ## License
 
@@ -110,4 +118,4 @@ License is configured during first-time setup.
 
 ---
 
-*Composed from [TheSereyn.Templates](https://github.com/TheSereyn/TheSereyn.Templates) @ v0.3.3*
+*Composed from [TheSereyn.Templates](https://github.com/TheSereyn/TheSereyn.Templates) @ v0.4.0*

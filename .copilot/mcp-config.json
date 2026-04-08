@@ -5,19 +5,18 @@
       "url": "https://learn.microsoft.com/api/mcp"
     },
     "nuget": {
-      "command": "dotnet",
-      "args": ["nuget-mcp"]
+      "command": "nuget-mcp-server"
     },
     "github": {
       "command": "npx",
-      "args": ["-y", "@anthropic/github-mcp-server"],
+      "args": ["-y", "@modelcontextprotocol/server-github@2025.4.8"],
       "env": {
         "GITHUB_TOKEN": "${input:githubToken}"
       }
     },
     "playwright": {
       "command": "npx",
-      "args": ["-y", "@playwright/mcp"]
+      "args": ["-y", "@playwright/mcp@0.0.70"]
     }
   },
   "inputs": [

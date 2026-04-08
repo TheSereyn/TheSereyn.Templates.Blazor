@@ -78,6 +78,13 @@ docker-compose.override.yml
 appsettings.Local.json
 appsettings.*.Local.json
 
+# Certificates and private keys
+*.pfx
+*.key
+*.pem
+*.p12
+*.cer
+
 # IDE
 .idea/
 *.swp

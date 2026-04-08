@@ -1,13 +1,22 @@
 ---
 name: "requirements-gathering"
-description: "Structured 10-phase requirements interview methodology — progressive-depth questioning, MoSCoW prioritisation, and comprehensive requirements.md output template"
+description: "Structured 10-phase requirements interview methodology — progressive-depth questioning, MoSCoW prioritisation, and comprehensive requirements.md output template. Complementary discovery tool for early-stage projects before Spec Kit specification."
 ---
 
 # Requirements Gathering
 
 ## Overview
 
-This skill defines a structured methodology for eliciting comprehensive project requirements through a conversational interview. It produces a `docs/planning/requirements.md` file that a Solution Architect can use to design the system.
+This skill defines a structured methodology for eliciting comprehensive project requirements through a conversational interview. It produces a `docs/planning/requirements.md` file that feeds into the Spec Kit specification workflow or can be used directly by a Solution Architect to design the system.
+
+### Relationship with Spec Kit
+
+This interview is a **complementary discovery tool**, not the primary workflow. Use it when:
+- The project idea is still vague and needs structured exploration
+- Multiple stakeholders need to be interviewed before formalising specifications
+- The domain is complex and benefits from progressive-depth questioning
+
+After the interview, the output (`docs/planning/requirements.md`) becomes input to Spec Kit's `/speckit.specify` phase, where requirements are formalised into executable specifications.
 
 ## Core Principles
 
@@ -16,7 +25,7 @@ This skill defines a structured methodology for eliciting comprehensive project 
 3. **One phase at a time.** Present questions in focused batches (3–5 questions). Wait for answers before moving on.
 4. **Challenge vagueness.** Requirements like "it should be fast" or "easy to use" need concrete definitions.
 5. **Summarise before advancing.** After each phase, restate what you've captured and confirm before moving on.
-6. **Track progress visually.** Use the todo list to show which phases are complete.
+6. **Track progress visually.** Summarise phase completion status as you go (e.g., ✅ Phase 1 done, → Phase 2 next).
 
 ## Context Loading
 
@@ -110,7 +119,7 @@ Work through these phases in order. Skip or merge phases that aren't relevant ba
 1. Open with Phase 1. Briefly explain the process.
 2. After each phase, summarise and ask: *"Is this accurate? Anything to add or correct?"*
 3. If an answer reveals something about a later phase, note it but stay focused on the current phase.
-4. Use the todo list to track phase completion.
+4. Track and display phase completion status as you go.
 5. If the user goes off-topic, capture the information but steer back.
 6. When all phases are covered, announce you'll compile the requirements document.
 
