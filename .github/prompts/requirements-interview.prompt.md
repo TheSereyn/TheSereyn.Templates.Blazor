@@ -43,3 +43,4 @@ Once the requirements document is complete, guide the user to the Spec Kit workf
 1. **Define constitution** — Run `/speckit.constitution` with the project's governance principles
 2. **Create specification** — Run `/speckit.specify` and reference `docs/planning/requirements.md` as the requirements source
 3. **Plan and implement** — Follow the standard SDD flow: `/speckit.plan` → `/speckit.tasks` → Squad
+4. **Update README** — If `/project-setup` has already been run, consider updating `README.md` with the richer project context captured during this interview

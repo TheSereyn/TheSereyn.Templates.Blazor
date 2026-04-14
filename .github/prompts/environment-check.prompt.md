@@ -1,12 +1,12 @@
 ---
 mode: agent
-description: "Lightweight environment verification. Run after first-time-setup to confirm the dev container, tools, and project configuration are healthy."
+description: "In-container readiness gate. Run this first after the dev container starts to verify tools, configuration, and environment health. Safe to re-run at any time."
 tools: ['read', 'terminal']
 ---
 
-# Verify Setup
+# Environment Check
 
-Run a quick health check on the development environment. Report pass/fail for each check and summarise at the end.
+Run a quick health check on the development environment. This is the first thing to run after the dev container starts. Report pass/fail for each check and summarise at the end.
 
 ## Checks
 
@@ -41,7 +41,7 @@ Confirm `.copilot/mcp-config.json` exists and contains server entries.
 
 ### 5 — Placeholder Resolution
 
-Check that `README.md` and `.github/copilot-instructions.md` do **not** contain unresolved `{{` placeholders. If they do, advise the user to run `/first-time-setup` or replace them manually.
+Check that `README.md` and `.github/copilot-instructions.md` do **not** contain unresolved `{{` placeholders. If they do, advise the user to run `/project-setup` to configure the project.
 
 ### 6 — Git Status
 
@@ -90,6 +90,8 @@ Print a summary table:
 | Spec Kit | ✅ / ❌ |
 | Security Basics | ✅ / ❌ |
 
-If all checks pass, congratulate the user — the environment is ready for development.
+If all checks pass, congratulate the user — the environment is ready.
 
-If any checks fail, provide specific remediation steps for each failure.
+If placeholders are unresolved, direct them to run `/project-setup` next.
+
+If any tool checks fail, provide specific remediation steps for each failure.

@@ -6,11 +6,13 @@
 
 Full-stack template for .NET projects with Minimal APIs, Blazor UI, Worker Services, and shared contracts.
 
+> **Note:** Running `@workspace /project-setup` in Copilot Chat will collect your project details and rewrite this README as your project's own documentation.
+
 ## Getting Started
 
 ### Prerequisites
 
-- [Docker](https://www.docker.com/) or [Podman](https://podman.io/)
+- [Docker Desktop](https://www.docker.com/) or [Podman Desktop](https://podman.io/)
 - [VS Code](https://code.visualstudio.com/) with the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
 ### First-Time Setup
@@ -19,21 +21,21 @@ Full-stack template for .NET projects with Minimal APIs, Blazor UI, Worker Servi
 2. Click **"Use this template"** on GitHub to create your new repository
 3. Clone your new repo and open it in VS Code
 4. When prompted, click **"Reopen in Container"**
-5. Once the container is built, run the **first-time-setup** prompt:
+5. Once the container is built, run the **environment check** then **project setup**:
    - Open Copilot Chat
-   - Type: `@workspace /first-time-setup`
-   - Follow the prompts to configure your project identity
+   - Type: `@workspace /environment-check` — verify the environment is healthy
+   - Type: `@workspace /project-setup` — configure your project identity, security baseline, license, and compliance
 
 ### What's Included
 
 | Component | Description |
 |-----------|-------------|
-| **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-outside-of-Docker |
+| **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI |
 | **MCP Servers** | Microsoft Learn, GitHub, Playwright |
 | **Spec Kit** | Spec-Driven Development — specifications, plans, and task decomposition |
 | **Squad** | AI development team — implementation orchestrator after planning |
 | **Skills** | TUnit testing, project conventions, spec-driven development, Blazor architecture, CSS design system, security (modular skill tree), RFC compliance, code analyzers |
-| **Prompts** | First-time setup, pre-container setup, verify setup, requirements interview, hire security architect |
+| **Prompts** | Environment check, project setup, compliance setup, pre-container setup, requirements interview, hire security architect |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
 | **Browser Automation** | [Playwright CLI](https://playwright.dev/docs/getting-started-cli) — agent-driven browser testing and automation |
 
@@ -46,7 +48,7 @@ This project uses **Spec-Driven Development** with Spec Kit and Squad:
 3. `/speckit.plan` → `/speckit.tasks` — Technical plan and task breakdown
 4. `@squad` — Implementation orchestration with specialist agents
 
-For early-stage discovery, run `/requirements-interview` before specifying.
+For early-stage discovery, run `/requirements-interview` before specifying (optional).
 
 ## Architecture
 
@@ -118,4 +120,4 @@ License is configured during first-time setup.
 
 ---
 
-*Composed from [TheSereyn.Templates](https://github.com/TheSereyn/TheSereyn.Templates) @ v0.4.0*
+*Composed from [TheSereyn.Templates](https://github.com/TheSereyn/TheSereyn.Templates) @ v0.5.0*

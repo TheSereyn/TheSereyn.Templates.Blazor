@@ -24,7 +24,9 @@ cd <your-repo>
 
 ### 2. Container Runtime
 
-Install **[Docker Desktop](https://www.docker.com/)** or **[Podman Desktop](https://podman.io/)** — both are fully supported. Make sure the runtime is running before proceeding.
+Install **[Docker Desktop](https://www.docker.com/)** or **[Podman Desktop](https://podman.io/)** — either works as the container runtime. Make sure the runtime is running before proceeding.
+
+> **Podman users:** Podman Desktop is the recommended path. If you use the Podman CLI directly on Linux, ensure you have Docker CLI compatibility enabled (`podman-docker` package or `podman.socket`).
 
 ### 3. VS Code + Dev Containers Extension
 
@@ -52,7 +54,7 @@ git config --global user.email "your@email.com"
 
 Open `.devcontainer/devcontainer.json` in any text editor on your host machine and replace `{{PROJECT_NAME}}` with your project name.
 
-> **Why now?** Docker and VS Code read the container name at build time. If you change it inside the container after the first build, the name won't update until you do a full container rebuild.
+> **Why now?** The container runtime reads the container name at build time. If you change it inside the container after the first build, the name won't update until you do a full container rebuild.
 
 ### 6. Open in Dev Container
 
@@ -68,8 +70,14 @@ This installs tools and configures the development environment. It may take seve
 
 ### 8. Next Step
 
-Once the container is ready, open **Copilot Chat** and run:
+Once the container is ready, open **Copilot Chat** and run the environment check:
 
 ```
-@workspace /first-time-setup
+@workspace /environment-check
+```
+
+When the environment check passes, run the project setup:
+
+```
+@workspace /project-setup
 ```

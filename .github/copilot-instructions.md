@@ -11,17 +11,13 @@
 | Layer | Technology |
 |-------|-----------|
 | **Runtime** | .NET 10, C# (latest LangVersion) |
-| **API** | ASP.NET Core Minimal APIs, REPR pattern |
-| **Architecture** | Clean Architecture (modular monolith or microservices) |
 | **Testing** | TUnit on Microsoft Testing Platform (MTP) |
 | **Code Quality** | StyleCop Analyzers + Roslyn Analyzers |
 | **Observability** | OpenTelemetry (traces, metrics, logs) |
 
 ## Authoritative Standards and Sources
 
-- **HTTP/REST:** RFC 9205 (Building Protocols with HTTP), RFC 9110 (HTTP Semantics), RFC 3986 (URI), RFC 9457 (Problem Details)
-- **IETF HTTPAPI WG:** Rate limiting, idempotency-key, etc.
-- **Documentation:** Prefer current Microsoft Learn docs for ASP.NET Core, .NET, Identity, Azure SDKs
+- **Documentation:** Prefer current Microsoft Learn docs for .NET, C#, and Azure SDKs
 
 ## MCP Tools — Source of Truth (CRITICAL)
 
@@ -49,31 +45,19 @@ Before making any assumption about .NET/C# APIs, package versions, or Azure capa
 ## Dependency Policy
 
 - Prefer MIT or Apache 2.0 licenses; keep dependency footprint lean
-- Prefer built-in BCL and ASP.NET Core features over external libraries
+- Prefer built-in BCL and framework features over external libraries
 - Do not add dependencies unless needed for the task
 - Follow `Directory.Packages.props` for central package management when present
 
 ## Security Principles
 
-- **Authentication:** OAuth/OIDC with PKCE for public clients; consider DPoP where elevated token binding is required. Use `[Authorize]` attributes and policies — never rely on client-side checks alone.
-- **CORS:** Never use `AllowAnyOrigin()` in production. Enumerate allowed origins explicitly. `AllowAnyOrigin` with `AllowCredentials` is rejected by browsers and is a CORS misconfiguration.
-- **Security headers:** Apply all of the following in middleware or reverse proxy:
-  - `Strict-Transport-Security` (HSTS) — enforce HTTPS
-  - `Content-Security-Policy` — restrict resource sources
-  - `X-Content-Type-Options: nosniff` — prevent MIME sniffing
-  - `X-Frame-Options: DENY` or CSP `frame-ancestors` — prevent clickjacking
-  - `Referrer-Policy: strict-origin-when-cross-origin`
-  - `Permissions-Policy` — restrict browser features
-  - For Blazor WASM: enable COEP/CORP/COOP for cross-origin isolation where SharedArrayBuffer is used
-- **Input validation:** Validate all inputs at the server boundary. Use model binding validation attributes (`[Required]`, `[MaxLength]`, `[RegularExpression]`). Do not trust client-supplied identifiers without ownership checks.
-- **Output encoding:** HTML-encode all user-supplied content rendered in HTML. Use `HttpUtility.HtmlEncode` or Razor's automatic encoding. Never inject raw user input into HTML, SQL, or shell commands.
-- **CSRF protection:** Enable ASP.NET Core antiforgery for state-changing form submissions. APIs using JWT bearer authentication are inherently CSRF-resistant (no cookies) — but cookie-authenticated APIs must enforce antiforgery.
-- **Rate limiting:** Apply `RateLimiter` middleware for all public endpoints. Use `AddRateLimiter` / `RequireRateLimiting` in ASP.NET Core 7+.
-- **Secrets:** Never commit secrets. Use `dotnet user-secrets` for development. Use Key Vault / environment variables in production. Ensure `appsettings.*.json` files with secrets are in `.gitignore`.
-- **Logging:** Never log PII, tokens, secrets, or full request bodies. Use opaque identifiers (IDs, not names/emails). Set `EnableSensitiveDataLogging(false)` in EF Core production config.
+- **Input validation:** Validate all external inputs at the application boundary. Do not trust user-supplied data without verification.
+- **Output encoding:** Never inject raw user input into SQL, shell commands, or markup without proper encoding or parameterisation.
+- **Secrets:** Never commit secrets. Use `dotnet user-secrets` for development. Use Key Vault / environment variables in production. Ensure files containing secrets are in `.gitignore`.
+- **Logging:** Never log PII, tokens, secrets, or full request/response bodies. Use opaque identifiers (IDs, not names/emails).
 - **Threat modelling:** Apply STRIDE (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege) early in design. Reference: [Microsoft Threat Modeling Tool](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool).
 - **Dependency security:** Run `dotnet list package --vulnerable` regularly. Prefer `Directory.Packages.props` for central version management.
-- **Security review:** Consult `security-review-core` for the systematic review workflow. Consult OWASP Top 10 (2021) and API Security Top 10 (2023).
+- **Security review:** Consult `security-review-core` for the systematic review workflow. Consult OWASP Top 10 (2021).
 
 ## Code Quality
 
@@ -96,32 +80,10 @@ When executing commands in the terminal:
 
 This stack uses **OpenTelemetry** for traces, metrics, and logs. Always use the .NET 8+ unified builder pattern — do **not** use the legacy `AddOpenTelemetryTracing` / `AddOpenTelemetryMetrics` (pre-.NET 8) overloads.
 
-### Standard Setup Pattern
-
-```csharp
-builder.Services.AddOpenTelemetry()
-    .ConfigureResource(r => r.AddService(
-        serviceName: builder.Environment.ApplicationName,
-        serviceVersion: Assembly.GetExecutingAssembly()
-                                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-                                ?.InformationalVersion ?? "unknown"))
-    .WithTracing(tracing => tracing
-        .AddAspNetCoreInstrumentation()
-        .AddHttpClientInstrumentation()
-        .AddOtlpExporter())
-    .WithMetrics(metrics => metrics
-        .AddAspNetCoreInstrumentation()
-        .AddHttpClientInstrumentation()
-        .AddRuntimeInstrumentation()
-        .AddOtlpExporter())
-    .WithLogging(logging => logging
-        .AddOtlpExporter());
-```
-
 ### Key conventions
 
 - **OTLP exporter** (`OpenTelemetry.Exporter.OpenTelemetryProtocol`) is the standard egress — configure via `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable, not hardcoded in code.
-- **Service name** comes from `IHostEnvironment.ApplicationName` or `OTEL_SERVICE_NAME` env var — not magic strings.
+- **Service name** comes from the application name or `OTEL_SERVICE_NAME` env var — not magic strings.
 - **Custom activities:** use `ActivitySource` registered via `.AddSource("YourSource.Name")` in `WithTracing()`.
 - **Custom metrics:** use `Meter` registered via `.AddMeter("YourMeter.Name")` in `WithMetrics()`.
 - **Never call** `AddOpenTelemetryTracing()` or `AddOpenTelemetryMetrics()` — these are legacy and removed in .NET 8+.
@@ -144,7 +106,7 @@ See the `tunit-testing` skill for full details. Key points:
 3. Minimal, production-ready code
 4. Security notes
 5. Tests (TUnit)
-6. Docs/OpenAPI updates
+6. Documentation updates
 7. Open questions
 8. Deviation notice (if applicable)
 
@@ -153,14 +115,10 @@ See the `tunit-testing` skill for full details. Key points:
 Copilot must clarify before coding if any of these are unclear:
 
 - Target scope and definition of done
-- Architecture boundaries (service splits, module boundaries)
-- Auth provider configuration (OIDC authority, flows, scopes)
-- Persistence technology and partitioning strategy
-- Messaging/eventing approach
-- API versioning policy
+- Architecture boundaries (module boundaries, component splits)
 - Deployment profile and environments
 - Non-functionals (latency, throughput, SLOs, cost constraints)
-- Security-sensitive changes (auth, secrets, middleware order, CORS)
+- Security-sensitive changes (auth, secrets, sensitive data handling)
 - Any suspected deviation from these standards
 
 ## Deviation/Escalation Policy
@@ -175,10 +133,9 @@ Copilot must clarify before coding if any of these are unclear:
 
 ## Micro-Checklists
 
-- **REST:** Status codes + ProblemDetails + validation + versioning + auth + OpenAPI
-- **Security:** Threats considered, inputs validated, authz enforced, secrets safe
-- **Performance:** Async, cancellation, streaming/virtualization, allocation-aware
-- **Observability:** Correlation IDs, structured logs, traces, KPIs
+- **Security:** Threats considered, inputs validated, secrets safe
+- **Performance:** Async, cancellation, streaming/virtualisation, allocation-aware
+- **Observability:** Structured logs, traces, metrics
 - **Tests:** Happy path + edge cases + failure + idempotency + concurrency
 - **Deviation:** If applicable, present Option A vs Option B with explicit flag
 
@@ -202,7 +159,8 @@ See the `spec-driven-development` skill for full details, constitution patterns,
 | Need | Tool |
 |------|------|
 | Define and iterate on specifications | Spec Kit (`/speckit.specify`) |
-| Early-stage discovery for vague ideas | Requirements Interview (`/requirements-interview`) |
+| Compliance configuration or revision | Compliance Setup (`/compliance-setup`) |
+| Early-stage discovery for vague ideas | Requirements Interview (`/requirements-interview`) — optional |
 | Implementation orchestration | Squad (`@squad`) |
 | Small bug fixes / refactors | Direct coding (no ceremony needed) |
 
@@ -215,20 +173,16 @@ See the `spec-driven-development` skill for full details, constitution patterns,
 
 ### Code Quality and Conventions
 - `tunit-testing` — TUnit framework patterns, MTP CLI flags, assertion syntax
-- `project-conventions` — Error handling, API patterns, code style, naming, async
-- `rfc-compliance` — HTTP/REST RFC standards checking (9205, 9110, 3986, 9457)
+- `project-conventions` — Code style, naming, async patterns, configuration
 - `code-analyzers` — Roslyn and StyleCop analyzer setup and configuration
 
 ### Security (entry point: `security-review-core`)
 - `security-review-core` — Security review workflow, severity/confidence model, PR checklist, and required output schema
 - `security-sources` — Canonical reference catalog (OWASP, NIST, Microsoft Learn, CodeQL) mapped to each security domain
 - `owasp-secure-code-review` — Manual review methodology, entry-point and data-flow analysis
-- `dotnet-authn-authz` — ASP.NET Core auth/authz, claims, policies, token and cookie review
-- `aspnetcore-api-security` — Middleware ordering, CORS, antiforgery, input validation, exception handling
-- `browser-security-headers` — CSP, HSTS, COEP/CORP/COOP, cross-origin isolation
 - `csharp-codeql-cwe` — CodeQL patterns, CWE mappings, manual review triggers
 - `secrets-and-configuration` — Committed secrets, config hierarchy, key management, log redaction
-- `data-access-and-validation` — IDOR, ownership checks, EF Core safe query patterns, multi-tenant boundaries
+- `data-access-and-validation` — Ownership checks, EF Core safe query patterns, multi-tenant boundaries
 - `serialization-file-upload-and-deserialization` — BinaryFormatter, TypeNameHandling, XXE, zip slip, path traversal
 - `supply-chain-and-dependencies` — NuGet provenance, lockfiles, transitive vulns, typosquatting, action SHA pinning
 - `ci-cd-ssdf-security` — GitHub Actions permissions, pull_request_target risk, OIDC federation, SSDF alignment
@@ -243,15 +197,105 @@ See the `spec-driven-development` skill for full details, constitution patterns,
 
 ## Prompts
 
-| Prompt | Description |
+| Prompt | When to Use |
 |--------|-------------|
-| `first-time-setup` | In-container setup — project identity, license, compliance, security configuration |
-| `pre-container-setup` | Host-level prerequisites checklist before opening the dev container |
-| `verify-setup` | Lightweight environment health check — re-runnable at any time |
-| `requirements-interview` | Structured discovery interview for early-stage or complex-domain projects |
-| `hire-security-architect` | Opt-in prompt to add a Security Architect agent to your Squad team |
+| `pre-container-setup` | Before opening the dev container — host-level prerequisites |
+| `environment-check` | First thing in-container — verifies tools and configuration are healthy (re-runnable) |
+| `project-setup` | After environment check — project identity, security baseline, license, compliance declaration, Spec Kit |
+| `compliance-setup` | Any time — configure, revise, or deepen compliance framework settings (re-runnable) |
+| `hire-security-architect` | Opt-in — add a Security Architect agent to your Squad team |
+| `requirements-interview` | Optional — structured discovery interview for early-stage or complex-domain projects |
 
 
+
+## Web Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **API** | ASP.NET Core Minimal APIs, REPR pattern |
+| **Architecture** | Clean Architecture (modular monolith or microservices) |
+
+## HTTP/REST Standards
+
+- **HTTP/REST:** RFC 9205 (Building Protocols with HTTP), RFC 9110 (HTTP Semantics), RFC 3986 (URI), RFC 9457 (Problem Details)
+- **IETF HTTPAPI WG:** Rate limiting, idempotency-key, etc.
+
+## Web Security
+
+- **Authentication:** OAuth/OIDC with PKCE for public clients; consider DPoP where elevated token binding is required. Use `[Authorize]` attributes and policies — never rely on client-side checks alone.
+- **CORS:** Never use `AllowAnyOrigin()` in production. Enumerate allowed origins explicitly. `AllowAnyOrigin` with `AllowCredentials` is rejected by browsers and is a CORS misconfiguration.
+- **Security headers:** Apply all of the following in middleware or reverse proxy:
+  - `Strict-Transport-Security` (HSTS) — enforce HTTPS
+  - `Content-Security-Policy` — restrict resource sources
+  - `X-Content-Type-Options: nosniff` — prevent MIME sniffing
+  - `X-Frame-Options: DENY` or CSP `frame-ancestors` — prevent clickjacking
+  - `Referrer-Policy: strict-origin-when-cross-origin`
+  - `Permissions-Policy` — restrict browser features
+  - For Blazor WASM: enable COEP/CORP/COOP for cross-origin isolation where SharedArrayBuffer is used
+- **Input validation (web):** Use model binding validation attributes (`[Required]`, `[MaxLength]`, `[RegularExpression]`). Do not trust client-supplied identifiers without ownership checks.
+- **Output encoding (web):** HTML-encode all user-supplied content rendered in HTML. Use `HttpUtility.HtmlEncode` or Razor's automatic encoding.
+- **CSRF protection:** Enable ASP.NET Core antiforgery for state-changing form submissions. APIs using JWT bearer authentication are inherently CSRF-resistant (no cookies) — but cookie-authenticated APIs must enforce antiforgery.
+- **Rate limiting:** Apply `RateLimiter` middleware for all public endpoints. Use `AddRateLimiter` / `RequireRateLimiting` in ASP.NET Core 7+.
+- **EF Core logging:** Set `EnableSensitiveDataLogging(false)` in EF Core production config.
+- **OWASP:** Consult API Security Top 10 (2023) for API-specific threat categories.
+
+## Web Observability — ASP.NET Core
+
+### Standard Setup Pattern
+
+```csharp
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(r => r.AddService(
+        serviceName: builder.Environment.ApplicationName,
+        serviceVersion: Assembly.GetExecutingAssembly()
+                                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                                ?.InformationalVersion ?? "unknown"))
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddOtlpExporter())
+    .WithMetrics(metrics => metrics
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddOtlpExporter())
+    .WithLogging(logging => logging
+        .AddOtlpExporter());
+```
+
+### Health Checks
+
+- Health checks at `/health`, `/health/live`, `/health/ready`
+- **Correlation:** `TraceId`, `SpanId`, `CorrelationId` on all log entries
+
+## Web Delivery Additions
+
+- Include **OpenAPI/Swagger** documentation updates with every endpoint change
+
+## Web Ask-First Triggers
+
+Copilot must also clarify before coding if any of these are unclear:
+
+- Auth provider configuration (OIDC authority, flows, scopes)
+- Persistence technology and partitioning strategy
+- Messaging/eventing approach
+- API versioning policy
+- Middleware ordering (auth, CORS, rate limiting)
+
+## Web Micro-Checklists
+
+- **REST:** Status codes + ProblemDetails + validation + versioning + auth + OpenAPI
+- **Auth:** Authz enforced, tokens validated, CORS configured
+
+## Additional Skills
+
+### Code Quality and Conventions (Web)
+- `rfc-compliance` — HTTP/REST RFC standards checking (9205, 9110, 3986, 9457)
+
+### Security (Web)
+- `dotnet-authn-authz` — ASP.NET Core auth/authz, claims, policies, token and cookie review
+- `aspnetcore-api-security` — Middleware ordering, CORS, antiforgery, input validation, exception handling
+- `browser-security-headers` — CSP, HSTS, COEP/CORP/COOP, cross-origin isolation
 
 - `blazor-architecture` — Hosting model guidance, multi-frontend patterns, RCL strategy, performance, state management
 - `blazor-wasm-security` — WASM trust model, client-side auth boundaries, token storage risks, JS interop boundary

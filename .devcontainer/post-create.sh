@@ -48,5 +48,6 @@ npx playwright install --with-deps
 echo "==> Dev container setup complete."
 echo ""
 echo "Next steps:"
-echo "  - Run the first-time-setup prompt in Copilot Chat: @workspace /first-time-setup"
+echo "  - Run the environment check in Copilot Chat: @workspace /environment-check"
+echo "  - Then run project setup: @workspace /project-setup"
 echo "  - Playwright browser binaries installed and ready"
