@@ -141,7 +141,7 @@ Copilot must clarify before coding if any of these are unclear:
 
 ## Development Workflow — Spec-Driven Development
 
-This project uses **Spec Kit** for spec-driven development (SDD) and **Squad** for implementation orchestration.
+This project uses **Spec Kit** for spec-driven development (SDD) and optional implementation tooling for execution.
 
 ### The Standard Flow
 
@@ -150,7 +150,7 @@ This project uses **Spec Kit** for spec-driven development (SDD) and **Squad** f
 3. **Refine and validate** — `/speckit.clarify` and `/speckit.checklist` resolve ambiguities
 4. **Plan implementation** — `/speckit.plan` produces a technical design aligned with this stack
 5. **Decompose into tasks** — `/speckit.tasks` creates actionable work items
-6. **Implement with Squad** — Squad's specialist agents execute the plan
+6. **Implement from the plan** — use the generated plan with your preferred implementation workflow
 
 See the `spec-driven-development` skill for full details, constitution patterns, and integration guidance.
 
@@ -161,15 +161,15 @@ See the `spec-driven-development` skill for full details, constitution patterns,
 | Define and iterate on specifications | Spec Kit (`/speckit.specify`) |
 | Compliance configuration or revision | Compliance Setup (`/compliance-setup`) |
 | Early-stage discovery for vague ideas | Requirements Interview (`/requirements-interview`) — optional |
-| Implementation orchestration | Squad (`@squad`) |
+| Implementation support | Optional AI workflow or implementation tool |
 | Small bug fixes / refactors | Direct coding (no ceremony needed) |
 
 ## Skills
 
 ### Development Workflow
-- `spec-driven-development` — Spec Kit integration, SDD workflow phases, constitution governance, and Squad handoff patterns
+- `spec-driven-development` — Spec Kit integration, SDD workflow phases, constitution governance, and implementation handoff guidance
 - `requirements-gathering` — Structured 10-phase requirements interview for early-stage discovery (complementary to Spec Kit)
-- `squad-setup` — Squad installation, `squad init`, team design, and implementation orchestration
+- `devcontainer-runtime-setup` — Detect Docker vs Podman and configure container-in-container support when requested
 
 ### Code Quality and Conventions
 - `tunit-testing` — TUnit framework patterns, MTP CLI flags, assertion syntax
@@ -203,7 +203,7 @@ See the `spec-driven-development` skill for full details, constitution patterns,
 | `environment-check` | First thing in-container — verifies tools and configuration are healthy (re-runnable) |
 | `project-setup` | After environment check — project identity, security baseline, license, compliance declaration, Spec Kit |
 | `compliance-setup` | Any time — configure, revise, or deepen compliance framework settings (re-runnable) |
-| `hire-security-architect` | Opt-in — add a Security Architect agent to your Squad team |
+| `security-compliance-review` | Opt-in — run a security and compliance review of the project using the available security skills |
 | `requirements-interview` | Optional — structured discovery interview for early-stage or complex-domain projects |
 
 

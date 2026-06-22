@@ -1,6 +1,6 @@
 ---
 name: "spec-driven-development"
-description: "Spec Kit integration for Spec-Driven Development (SDD) — installation, workflow phases, constitution governance, and integration with Squad for implementation orchestration"
+description: "Spec Kit integration for Spec-Driven Development (SDD) — installation, workflow phases, constitution governance, and implementation handoff guidance"
 ---
 
 # Spec-Driven Development with Spec Kit
@@ -9,16 +9,16 @@ description: "Spec Kit integration for Spec-Driven Development (SDD) — install
 
 This project uses **Spec Kit** (from GitHub) as its primary planning and specification workflow. Spec-Driven Development (SDD) flips the traditional process: specifications are defined first and become the source of truth that drives implementation, rather than writing code and refining later.
 
-**Squad** serves as the implementation orchestrator — once Spec Kit produces a validated plan and task breakdown, Squad's team of specialist agents executes the implementation.
+A separate implementation workflow can pick up the validated plan once Spec Kit produces it, but no extra orchestration tool is required by default.
 
 ### The Handoff Model
 
 ```
-Spec Kit (specify → plan → tasks)  →  Squad (implement with specialist agents)
+Spec Kit (specify → plan → tasks)  →  Implementation workflow
 ```
 
 - **Spec Kit owns:** requirements capture, specification refinement, constitution governance, technical planning, task decomposition
-- **Squad owns:** implementation orchestration, code generation, testing, code review, security review
+- **Implementation workflow owns:** code generation, testing, code review, security review, and other execution tasks
 
 ## Prerequisites
 
@@ -35,7 +35,7 @@ Spec Kit (specify → plan → tasks)  →  Squad (implement with specialist age
 
 ### Initialise Spec Kit in an existing project
 
-The `specify` CLI is pre-installed in the Dev Container (pinned to v0.5.0). Run:
+The `specify` CLI is pre-installed in the Dev Container (latest available). Run:
 
 ```bash
 specify init --here --ai copilot
@@ -44,7 +44,7 @@ specify init --here --ai copilot
 For standalone installs outside the Dev Container:
 
 ```bash
-uvx --from "git+https://github.com/github/spec-kit.git@v0.5.0" specify init --here --ai copilot
+uvx --from "git+https://github.com/github/spec-kit.git" specify init --here --ai copilot
 ```
 
 Key flags:
@@ -144,22 +144,15 @@ Optionally validate first:
 /speckit.analyze
 ```
 
-### Phase 5 — Implement (Handoff to Squad)
+### Phase 5 — Implement
 
-Once Spec Kit has produced a validated task list, hand off to Squad for implementation:
+Once Spec Kit has produced a validated task list, hand off to your preferred implementation workflow:
 
 ```
 /speckit.implement
 ```
 
-Or, for more control, use Squad directly:
-
-```
-@squad Implement the tasks from the Spec Kit plan. Follow the specification and
-constitution. Use the project skills for testing, security, and code conventions.
-```
-
-Squad will assign tasks to specialist agents (architect, implementer, tester, security reviewer) and orchestrate the build.
+If you want a more guided implementation experience, use your preferred agent workflow and point it at the generated plan, constitution, and project skills.
 
 ## Integration with Existing Skills
 
@@ -172,7 +165,7 @@ Spec Kit's constitution and specification phases benefit from the project's esta
 | `security-review-core` | Security review during and after implementation |
 | `rfc-compliance` | API design constraints for the plan phase |
 | `requirements-gathering` | Complementary discovery tool for early-stage exploration |
-| `squad-setup` | Squad manages implementation after planning |
+| `devcontainer-runtime-setup` | Optional runtime detection and container-in-container guidance |
 
 ## Constitution Patterns
 
@@ -218,7 +211,7 @@ the authoritative requirements source.
 - **Skipping the constitution** — Without governance, specifications drift from project standards
 - **Specifying technology in the specify phase** — Technology choices belong in the plan phase
 - **Implementing without `/speckit.tasks`** — Task decomposition prevents monolithic, hard-to-review changes
-- **Bypassing Squad for implementation** — Squad's specialist agents (security, testing, architecture) catch issues a single agent misses
+- **Bypassing the implementation workflow** — a structured implementation workflow still catches issues that a single pass might miss
 - **Duplicating copilot-instructions in the constitution** — Reference the existing instructions, don't repeat them
 - **Using Spec Kit for trivial changes** — Bug fixes and small refactors don't need full SDD ceremony
 

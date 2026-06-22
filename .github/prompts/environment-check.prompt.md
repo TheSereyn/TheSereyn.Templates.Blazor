@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 description: "In-container readiness gate. Run this first after the dev container starts to verify tools, configuration, and environment health. Safe to re-run at any time."
 tools: ['read', 'terminal']
 ---
@@ -51,13 +51,13 @@ git status
 
 Confirm the repo is initialised and on a branch. Note any uncommitted changes.
 
-### 7 — Squad
+### 7 — Container runtime (optional)
 
 ```bash
-squad --version
+docker --version || podman --version
 ```
 
-Confirm Squad is installed. If the command fails, advise re-running `bash .devcontainer/post-create.sh`.
+Confirm that a container runtime is available if you plan to use container-in-container workflows. If the command fails, note that the standard devcontainer setup is still available and that the runtime setup can be retried later.
 
 ### 8 — Spec Kit
 
@@ -86,7 +86,7 @@ Print a summary table:
 | MCP Configuration | ✅ / ❌ |
 | Placeholders Resolved | ✅ / ❌ |
 | Git Status | ✅ / ❌ |
-| Squad | ✅ / ❌ |
+| Container runtime | ✅ / ❌ |
 | Spec Kit | ✅ / ❌ |
 | Security Basics | ✅ / ❌ |
 

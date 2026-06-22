@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 description: "Compliance framework configuration. Run this to set up, revise, or deepen compliance requirements. Idempotent — safe to run at any project stage."
 tools: ['read', 'edit', 'search', 'terminal']
 ---

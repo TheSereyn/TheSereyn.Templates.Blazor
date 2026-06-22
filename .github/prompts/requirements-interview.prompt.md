@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 description: "Complementary discovery interview for early-stage projects. Produces docs/planning/requirements.md that can feed into Spec Kit's /speckit.specify phase. Use when your idea is still vague or you need structured stakeholder discovery before formal specification."
 tools: ['read', 'edit', 'search']
 ---
@@ -42,5 +42,5 @@ Once the requirements document is complete, guide the user to the Spec Kit workf
 
 1. **Define constitution** — Run `/speckit.constitution` with the project's governance principles
 2. **Create specification** — Run `/speckit.specify` and reference `docs/planning/requirements.md` as the requirements source
-3. **Plan and implement** — Follow the standard SDD flow: `/speckit.plan` → `/speckit.tasks` → Squad
+3. **Plan and implement** — Follow the standard SDD flow: `/speckit.plan` → `/speckit.tasks` → implement the plan with your preferred workflow
 4. **Update README** — If `/project-setup` has already been run, consider updating `README.md` with the richer project context captured during this interview

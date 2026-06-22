@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 description: "In-container project setup. Run this from Copilot Chat after the environment check passes. Configures project identity, security baseline, license, compliance declaration, and Spec Kit."
 tools: ['read', 'edit', 'search', 'terminal']
 ---
@@ -24,7 +24,7 @@ If it reports "You are not logged in", ask them to run:
 gh auth login
 ```
 
-They should follow the browser-based flow (or device code flow) to complete authentication. This is required for GitHub features, the Copilot CLI extension, and Squad's GitHub integration.
+They should follow the browser-based flow (or device code flow) to complete authentication. This is required for GitHub features and the devcontainer workflow.
 
 Once authenticated, verify with `gh auth status` and proceed.
 
@@ -87,7 +87,7 @@ Using the project information from Step 3, rewrite `README.md` so it reads as **
 4. **Getting Started** — keep Dev Container prerequisites and the build/test/run commands. Write them as project onboarding steps, not template instructions.
 5. **Architecture** — if the current README has an Architecture section, preserve it as project documentation. Reframe any "This template is designed for..." language to "This project follows..."
 6. **Key Conventions** — if present, keep as project coding standards
-7. **Development** — build, test, and run commands. Include the Spec Kit / Squad workflow summary if it was in the original README — condense it to a short reference.
+7. **Development** — build, test, and run commands. Include a short Spec Kit workflow summary that points to the generated plan and the preferred implementation workflow.
 8. **License** — `See [LICENSE](LICENSE).`
 
 ### What to remove
@@ -165,13 +165,13 @@ If this is a fresh clone from "Use this template":
 - Verify git is initialised (`git status`)
 - If the user provided a GitHub repo URL, verify or set the remote
 
-## Step 9 — Verify Squad
+## Step 9 — Verify Core Tooling
 
-Squad is installed automatically during container creation. Verify the installation:
-- Report the installed version (`squad --version`)
-- Run `squad doctor` to confirm everything is healthy
+Verify the core toolchain that the template expects:
+- Confirm the container runtime setup is available if you opted in to container-in-container support
+- Confirm the `specify` CLI is available (`specify --version`)
 
-> **Note:** If `squad doctor` reports issues, re-run the post-create script:
+> **Note:** If the CLI is missing, re-run the post-create script:
 > ```bash
 > bash .devcontainer/post-create.sh
 > ```
@@ -205,7 +205,7 @@ Provide a summary of what was configured, then suggest:
 
 1. **Define your constitution** — Run `/speckit.constitution` in Copilot Chat with your project's core principles and constraints (reference `.github/copilot-instructions.md` for established standards)
 2. **Specify what to build** — Run `/speckit.specify` to capture your requirements as executable specifications
-3. **Plan and implement** — Use `/speckit.plan` → `/speckit.tasks` → hand off to Squad (`@squad`) for implementation
+3. **Plan and implement** — Use `/speckit.plan` → `/speckit.tasks` → implement the generated plan with your preferred workflow
 
 If compliance was deferred or skipped, include:
 

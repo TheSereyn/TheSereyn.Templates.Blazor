@@ -6,8 +6,7 @@ set -euo pipefail
 
 # ── Pinned versions (update here when upgrading) ──────────────────────
 NUGET_MCP_VERSION="1.2.3"
-SQUAD_CLI_VERSION="0.9.1"
-SPECKIT_TAG="v0.5.0"
+SPECKIT_SOURCE="git+https://github.com/github/spec-kit.git"
 MSDOCS_COMMIT="933e0c5044b938cbeb23709e1cb125c8d93395c0"
 # ──────────────────────────────────────────────────────────────────────
 
@@ -21,16 +20,6 @@ python3 --version
 gh --version
 az --version
 
-# ── GitHub CLI Copilot extension ──────────────────────────────────────
-echo "--> Installing GitHub CLI Copilot extension"
-if gh auth status &>/dev/null; then
-  gh extension install github/gh-copilot 2>/dev/null \
-    || gh extension upgrade github/gh-copilot 2>/dev/null \
-    || echo "  gh-copilot: already at latest"
-else
-  echo "  gh-copilot: skipped (run 'gh auth login' first, then 'gh extension install github/gh-copilot')"
-fi
-
 # ── Shell integration (idempotent via marker) ─────────────────────────
 echo "--> Configuring shell integration"
 if ! grep -qF "$BASHRC_MARKER" /home/vscode/.bashrc 2>/dev/null; then
@@ -38,11 +27,6 @@ if ! grep -qF "$BASHRC_MARKER" /home/vscode/.bashrc 2>/dev/null; then
 # TheSereyn devcontainer managed block
 # Ensure ~/.local/bin is on PATH (uv tools, pip --user installs)
 export PATH="$HOME/.local/bin:$PATH"
-
-# GitHub Copilot CLI aliases — activated after gh auth login
-if command -v gh &>/dev/null 2>&1; then
-  eval "$(gh copilot alias -- bash 2>/dev/null)" 2>/dev/null || true
-fi
 # End TheSereyn managed block
 BASHRC
   echo "  .bashrc: managed block added"
@@ -58,24 +42,17 @@ else
   dotnet tool install -g nuget.mcp.server --version "$NUGET_MCP_VERSION"
 fi
 
-# ── Squad CLI ─────────────────────────────────────────────────────────
-echo "--> Installing Squad CLI (pinned v${SQUAD_CLI_VERSION})"
-if npm list -g @bradygaster/squad-cli &>/dev/null; then
-  echo "  squad-cli: already installed"
-else
-  npm install -g "@bradygaster/squad-cli@${SQUAD_CLI_VERSION}"
-fi
-
 # ── uv + Spec Kit CLI ────────────────────────────────────────────────
 echo "--> Installing uv (Python package manager)"
 python3 -m pip install --user --quiet uv
 export PATH="$HOME/.local/bin:$PATH"
 
-echo "--> Installing Spec Kit CLI (pinned to ${SPECKIT_TAG})"
+echo "--> Installing Spec Kit CLI (latest available)"
 if command -v specify &>/dev/null; then
-  echo "  specify-cli: already installed"
+  echo "  specify-cli: updating to latest available"
+  uv tool install --force specify-cli --from "$SPECKIT_SOURCE"
 else
-  uv tool install specify-cli --from "git+https://github.com/github/spec-kit.git@${SPECKIT_TAG}"
+  uv tool install specify-cli --from "$SPECKIT_SOURCE"
 fi
 
 # ── Microsoft Docs MCP skills (pinned to commit SHA) ─────────────────

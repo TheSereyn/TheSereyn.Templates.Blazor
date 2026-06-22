@@ -120,4 +120,4 @@ License is configured during first-time setup.
 
 ---
 
-*Composed from [TheSereyn.Templates](https://github.com/TheSereyn/TheSereyn.Templates) @ v0.5.0*
+*Composed from [TheSereyn.Templates](https://github.com/TheSereyn/TheSereyn.Templates) @ v0.5.1*
